@@ -38,7 +38,7 @@ namespace Onlyoffice
 {
     public class CallbackHandler : IHttpHandler
     {
-        protected int secret; 
+        protected int secret;
 
         public void ProcessRequest(HttpContext context)
         {
@@ -46,14 +46,14 @@ namespace Onlyoffice
             data = data.Replace(" ", "+");
 
             bool isValidData = false;
-            string  action = "",
+            string action = "",
                     SPListItemId = "",
                     SPListURLDir = "",
                     Folder = "",
                     url = HttpUtility.HtmlEncode(HttpContext.Current.Request.Url.Scheme) + "://" + HttpContext.Current.Request.Url.Authority +
                                                                                                             HttpContext.Current.Request.RawUrl.Substring(0, HttpContext.Current.Request.RawUrl.IndexOf("_layouts"));
             //get secret key
-            SPSecurity.RunWithElevatedPrivileges(delegate()
+            SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
                 using (SPSite site = new SPSite(url))
                 using (SPWeb web = site.OpenWeb())
@@ -117,11 +117,11 @@ namespace Onlyoffice
                             context.Response.End();
                         }
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
                         Log.LogError(ex.Message);
                     }
-                    
+
                 }
             });
         }
@@ -139,10 +139,10 @@ namespace Onlyoffice
                         string body;
                         using (var reader = new StreamReader(context.Request.InputStream))
                             body = reader.ReadToEnd();
-                        
+
                         var fileData = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(body);
                         try
-                        { 
+                        {
                             var userList = (System.Collections.ArrayList)fileData["users"];
                             var userID = Int32.Parse(userList[0].ToString());
 
@@ -160,20 +160,21 @@ namespace Onlyoffice
                                 userToken = web.AllUsers[0].UserToken;
                             }
                         }
-                        catch (Exception ex) {
+                        catch (Exception ex)
+                        {
 
                             Log.LogError(ex.Message);
-                            userToken = web.AllUsers[0].UserToken; 
+                            userToken = web.AllUsers[0].UserToken;
                         }
 
                         try
                         {
-                            SPSite s = new SPSite(url, userToken);
-                            SPWeb w = s.OpenWeb();
+                            //SPSite s = new SPSite(url, userToken);
+                            //SPWeb w = s.OpenWeb();
 
-                            SPList list = w.GetList(SPListURLDir);
+                            SPList list = web.GetList(SPListURLDir);
                             SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
-                            
+
                             //save file to SharePoint
                             if ((int)fileData["status"] == 2)
                             {
@@ -182,9 +183,9 @@ namespace Onlyoffice
                                 var replaceExistingFiles = true;
 
                                 var fileName = item.File.Name;
-                            
-                                w.AllowUnsafeUpdates = true; //for list update in SharePoint necessary AllowUnsafeUpdates = true
-                                w.Update();
+
+                                web.AllowUnsafeUpdates = true; //for list update in SharePoint necessary AllowUnsafeUpdates = true
+                                //w.Update();
 
                                 byte[] fileDataArr = null;
                                 using (var wc = new WebClient())
@@ -192,7 +193,7 @@ namespace Onlyoffice
 
                                 if (Folder != "")
                                 {
-                                    SPFolder folder = w.GetFolder(Folder);
+                                    SPFolder folder = web.GetFolder(Folder);
                                     folder.Files.Add(fileName, fileDataArr, replaceExistingFiles);
                                     folder.Update();
                                 }
@@ -202,8 +203,8 @@ namespace Onlyoffice
                                     list.Update();
                                 }
 
-                                w.AllowUnsafeUpdates = false;
-                                w.Update();
+                                web.AllowUnsafeUpdates = false;
+                                web.Update();
                             }
                             context.Response.Write("{\"error\":0}");
                         }
