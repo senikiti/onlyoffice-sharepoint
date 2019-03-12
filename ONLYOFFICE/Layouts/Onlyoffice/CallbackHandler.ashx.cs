@@ -93,10 +93,10 @@ namespace Onlyoffice
                     try
                     {
                         userToken = web.AllUsers[0].UserToken;
-                        SPSite s = new SPSite(url, userToken);
+                        //SPSite s = new SPSite(url, userToken);
 
-                        SPWeb w = s.OpenWeb();
-                        SPList list = w.GetList(SPListURLDir);
+                        //SPWeb w = s.OpenWeb();
+                        SPList list = web.GetList(SPListURLDir);
 
                         SPListItem item = list.GetItemById(Int32.Parse(SPListItemId));
                         //get and send file
