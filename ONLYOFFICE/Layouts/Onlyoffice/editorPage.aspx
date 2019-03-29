@@ -21,7 +21,8 @@
                     },
                     "key":          "<%= Key %>",
                     "permissions": {
-                        "edit":      "<%= canEdit.ToString().ToLower() %>",
+                        "edit":     <%= canEdit.ToString().ToLower() %>,
+                        "comment":  <%= canComment.ToString().ToLower() %>,
                     },
                     "title":        "<%= FileName %>",
                     "url": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlDocDownload) %>"
@@ -39,6 +40,9 @@
                             "text": "<%= GoToBackText %>",
                             "url":  "<%= GoToBack %>"
                         },
+                        "comments":  <%= canComment.ToString().ToLower() %>,
+                        "commentAuthorOnly": true,
+                        "chat": <%= canComment.ToString().ToLower() %>,
                     },
                     "callbackUrl": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlDocTrack)%>"
                 },

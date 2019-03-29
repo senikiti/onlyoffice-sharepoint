@@ -68,6 +68,7 @@ namespace Onlyoffice.Layouts
 
         protected int CurrentUserId = 0;
         protected bool canEdit = false;
+        protected bool canComment = false;
         SPUser currentUser;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -105,6 +106,9 @@ namespace Onlyoffice.Layouts
                 Response.Redirect(SPUrl, true);
                 return;
             }
+            // To distinguish between commenters and viewers we have created a special reduced permission level - ViewOnly 
+            // It has no OpenItems base permissions. This way we distinguish between those who can comment and those who cannot.
+            canComment = item.DoesUserHavePermissions(currentUser, SPBasePermissions.OpenItems);
             canEdit = item.DoesUserHavePermissions(currentUser, SPBasePermissions.EditListItems);
 
             SPSecurity.RunWithElevatedPrivileges(delegate ()
