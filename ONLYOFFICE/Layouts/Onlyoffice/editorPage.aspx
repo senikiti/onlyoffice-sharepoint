@@ -23,6 +23,8 @@
                     "permissions": {
                         "edit":     <%= canEdit.ToString().ToLower() %>,
                         "comment":  <%= canComment.ToString().ToLower() %>,
+                        "download": <%= canEdit.ToString().ToLower() %>,
+                        "print": <%= canEdit.ToString().ToLower() %>,
                     },
                     "title":        "<%= FileName %>",
                     "url": "<%= SPUrl %>/_layouts/<%= SPVersion %>Onlyoffice/CallbackHandler.ashx?data=<%= HttpUtility.UrlEncode(urlDocDownload) %>"
