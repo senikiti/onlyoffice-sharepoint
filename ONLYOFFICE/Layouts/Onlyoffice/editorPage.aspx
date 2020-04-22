@@ -15,8 +15,8 @@
                 "document": {
                     "fileType":     "<%= FileType %>",
                     "info": {
-                        "author":   "<%= FileAuthor %>",
-                        "created":  "<%= FileTimeCreated %>",
+                        "owner":   "<%= FileAuthor %>",
+                        "uploaded":  "<%= FileTimeCreated %>",
                         "folder":   "<%= Folder %>"
                     },
                     "key":          "<%= Key %>",

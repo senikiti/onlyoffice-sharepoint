@@ -181,7 +181,8 @@ namespace Onlyoffice.Layouts
                                     {
                                         var canEditType = FileUtility.CanEditTypes.Contains(FileType);
                                         canEdit = canEdit & canEditType;
-                                        FileEditorMode = canEdit == true ? "edit" : FileEditorMode;
+                                        //FileEditorMode = canEdit == true ? "edit" : FileEditorMode;
+                                        FileEditorMode = canComment == true ? "edit" : FileEditorMode;
                                         //documentType = FileUtility.docTypes[FileType];   DocType.GetDocType(FileName)   
                                         documentType = FileUtility.GetDocType(FileType);
                                     }
